@@ -1,0 +1,15 @@
+<%= form_with(model: [ @list, @bookmark ], local: true) do |f| %>
+  <div>
+    <%= f.label :movie_id, 'Select movie' %>
+    <%= f.collection_select :movie_id, Movie.all, :id, :title %>
+  </div>
+
+  <div>
+    <%= f.label :comment %>
+    <%= f.text_area :comment %>
+  </div>
+
+  <div>
+    <%= f.submit 'Add movie to list' %>
+  </div>
+<% end %>

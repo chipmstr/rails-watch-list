@@ -1,0 +1,49 @@
+<div class="container mt-4"> <!-- added container for consistent width -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Add a new Movie</h1> <!-- set margin-bottom to 0 to remove extra space -->
+    <div>
+      <%= link_to 'Back to Movies', movies_path, class: 'btn btn-secondary' %> <!-- back to movies button -->
+    </div>
+  </div>
+
+  <%= form_with model: @movie, local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :title %> <!-- label for title -->
+      <%= f.text_field :title, class: 'form-control', placeholder: 'Enter movie title' %> <!-- input field for title -->
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :overview %> <!-- label for overview -->
+      <%= f.text_area :overview, class: 'form-control', placeholder: 'Enter movie overview' %> <!-- textarea for overview -->
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :poster_url %> <!-- label for poster URL -->
+      <%= f.text_field :poster_url, class: 'form-control', placeholder: 'Enter poster URL' %> <!-- input field for poster URL -->
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :rating, "Rating" %> <!-- label for rating -->
+      <div>
+        <%= f.range_field :rating, class: 'form-range', min: 1, max: 5, step: 0.5, value: @movie.rating, style: 'width: 30%; margin: 0 auto; appearance: none; background: #e9ecef;' %> <!-- shorter and more prominent slider -->
+      </div>
+      <p>Current Rating: <span id="current-rating"><%= @movie.rating %></span></p> <!-- display current rating -->
+    </div>
+
+    <div>
+      <%= f.submit 'Create Movie', class: 'btn btn-primary' %> <!-- submit button to create movie -->
+    </div>
+  <% end %>
+</div>
+
+<script>
+  // update current rating display when slider value changes
+  document.addEventListener("DOMContentLoaded", function() {
+    const slider = document.querySelector('input[type="range"]');
+    const output = document.getElementById('current-rating');
+
+    slider.oninput = function() {
+      output.textContent = this.value; // update the displayed rating
+    };
+  });
+</script>
