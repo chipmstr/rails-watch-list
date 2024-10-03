@@ -8,33 +8,98 @@
 
 // your specific css rules
 .card-img-top {
-  width: 100%; /* takes the full width of the card */
-  height: 250px; /* height of the images */
-  object-fit: cover !important; /* scales the image to fill the container */
+  width: 100%; /* full width of the card */
+  height: 200px; /* fixed height for the images */
+  object-fit: contain; /* keep the original aspect ratio and make sure the image fits inside the container */
 }
 
-.fixed-buttons {
-  position: fixed; /* fix position */
-  top: 20px; /* distance from the top */
-  right: 20px; /* distance from the right */
-  z-index: 1000; /* ensure it is on top */
+/* Card container with fixed height */
+.card {
+  height: 450px; /* ensure all cards have the same height */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* smooth hover effects */
+  border-radius: 15px; /* rounded corners */
 }
 
-input.form-control,
-textarea.form-control {
-  border: 2px solid #007bff; /* thicker blue border */
-  border-radius: 0.25rem; /* slightly rounded corners */
+.card:hover {
+  transform: translateY(-10px); /* card lifts on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* stronger shadow on hover */
+}
+
+/* Body area with flexible height to fit content */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #fdfdfd;
+  padding: 20px;
+  min-height: 200px; /* set a minimum height for the body */
+}
+
+/* Additional styling for title */
+.card-title {
+  font-weight: bold;
+  text-transform: uppercase; /* titles in uppercase */
+  letter-spacing: 1px; /* spaced out letters */
+  font-size: 1.2rem;
+}
+
+/* Additional styles */
+.card-text {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Other button styles */
+.btn {
+  border-radius: 8px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Ensure all cards have same margin-bottom */
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .rating-stars {
-  color: gold; /* Yellow color for stars */
-  font-size: 1.5rem; /* Adjust size as needed */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Shadow for stars */
-  margin-bottom: 10px; /* Space below the stars */
+  display: flex; /* use flexbox */
+  flex-wrap: wrap; /* allows stars to wrap to next line */
+  overflow: hidden; /* hides overflow content */
+  max-width: 100%; /* restricts width to container */
 }
 
-.card-body {
-  display: flex; /* Flexbox for vertical alignment */
-  flex-direction: column; /* Column arrangement */
-  justify-content: space-between; /* Space between elements */
+.rating-stars i {
+  flex: 0 1 auto; /* allows stars to shrink but maintains their size */
+  font-size: 1.2rem; /* default star size */
+  margin-right: 3px; /* space between stars */
+}
+
+@media (max-width: 768px) {
+  .rating-stars i {
+    font-size: 1rem; /* smaller size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .rating-stars i {
+    font-size: 0.8rem; /* even smaller size for very small screens */
+  }
+}
+
+.add-movie-section {
+  max-width: 100%; /* ensure the section doesn't exceed its parent */
+  overflow: hidden; /* hide overflow content */
 }

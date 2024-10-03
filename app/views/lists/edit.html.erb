@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <h1>Edit List</h1>
+
+  <%= form_with(model: @list, local: true) do |form| %>
+    <div class="mb-3">
+      <%= form.label :name, "List Title" %>
+      <%= form.text_field :name, class: 'form-control', style: 'width: 50%;' %>
+    </div>
+
+    <!-- upload image or show existing image -->
+    <div class="mb-3">
+      <% if @list.photo.attached? %>
+        <p>Current Image:</p>
+        <%= image_tag @list.photo, class: "img-fluid mb-3", style: "max-height: 250px;" %>
+        <%= form.check_box :remove_photo %> Remove image
+      <% else %>
+        <p>No image attached.</p>
+      <% end %>
+      <%= form.file_field :photo, class: 'form-control', style: 'width: 45%;' %>
+    </div>
+
+    <%= form.submit "Save changes", class: "btn btn-primary" %>
+    <%= link_to 'Back', list_path(@list), class: 'btn btn-secondary' %>
+  <% end %>
+</div>

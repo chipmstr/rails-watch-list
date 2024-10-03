@@ -4,17 +4,17 @@
   <%= form_with model: @movie, local: true do |f| %>
     <div class="mb-3">
       <%= f.label :title %>
-      <%= f.text_field :title, class: 'form-control' %>
+      <%= f.text_field :title, class: 'form-control', style: 'width: 45%;' %> <!-- input field with custom width -->
     </div>
 
     <div class="mb-3">
       <%= f.label :overview %>
-      <%= f.text_area :overview, class: 'form-control' %>
+      <%= f.text_area :overview, class: 'form-control', style: 'width: 45%;' %> <!-- textarea with custom width -->
     </div>
 
     <div class="mb-3">
       <%= f.label :poster_url %>
-      <%= f.text_field :poster_url, class: 'form-control' %>
+      <%= f.text_field :poster_url, class: 'form-control', style: 'width: 45%;' %> <!-- input field with custom width -->
     </div>
 
     <div class="mb-3">

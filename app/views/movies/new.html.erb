@@ -1,4 +1,4 @@
-<div class="container mt-4"> <!-- added container for consistent width -->
+<div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="mb-0">Add a new Movie</h1> <!-- set margin-bottom to 0 to remove extra space -->
     <div>
@@ -9,17 +9,17 @@
   <%= form_with model: @movie, local: true do |f| %>
     <div class="mb-3">
       <%= f.label :title %> <!-- label for title -->
-      <%= f.text_field :title, class: 'form-control', placeholder: 'Enter movie title' %> <!-- input field for title -->
+      <%= f.text_field :title, class: 'form-control', placeholder: 'Enter movie title', style: 'width: 45%;' %> <!-- input field for title with custom width -->
     </div>
 
     <div class="mb-3">
       <%= f.label :overview %> <!-- label for overview -->
-      <%= f.text_area :overview, class: 'form-control', placeholder: 'Enter movie overview' %> <!-- textarea for overview -->
+      <%= f.text_area :overview, class: 'form-control', placeholder: 'Enter movie overview', style: 'width: 45%;' %> <!-- textarea for overview with custom width -->
     </div>
 
     <div class="mb-3">
       <%= f.label :poster_url %> <!-- label for poster URL -->
-      <%= f.text_field :poster_url, class: 'form-control', placeholder: 'Enter poster URL' %> <!-- input field for poster URL -->
+      <%= f.text_field :poster_url, class: 'form-control', placeholder: 'Enter poster URL', style: 'width: 45%;' %> <!-- input field for poster URL with custom width -->
     </div>
 
     <div class="mb-3">
@@ -35,15 +35,3 @@
     </div>
   <% end %>
 </div>
-
-<script>
-  // update current rating display when slider value changes
-  document.addEventListener("DOMContentLoaded", function() {
-    const slider = document.querySelector('input[type="range"]');
-    const output = document.getElementById('current-rating');
-
-    slider.oninput = function() {
-      output.textContent = this.value; // update the displayed rating
-    };
-  });
-</script>

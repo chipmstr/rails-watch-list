@@ -10,25 +10,50 @@
   <div class="row">
     <% @lists.each do |list| %> <!-- iterate through each list -->
       <div class="col-md-3">
-        <div class="card mb-4">
-          <% if list.bookmarks.any? %> <!-- check if the list has any bookmarks -->
-            <%= image_tag list.bookmarks.first.movie.poster_url, class: "card-img-top" %> <!-- display the first movie's poster -->
+        <div class="card mb-4 d-flex flex-column" style="height: 600px;"> <!-- Fixed height for the card -->
+
+          <!-- Image Section: Let the image cover the full width and fixed height, rectangular shape -->
+          <% if list.photo.attached? %>
+            <%= cl_image_tag list.photo.key, class: "card-img-top", style: "height: 400px; object-fit: cover; width: 100%;" %> <!-- Adjusted to rectangular portrait orientation -->
           <% else %>
-            <%= image_tag "https://via.placeholder.com/150", class: "card-img-top" %> <!-- example image if no movies are present -->
+            <%= image_tag "https://via.placeholder.com/350x500", class: "card-img-top", style: "height: 400px; object-fit: cover; width: 100%;" %> <!-- Placeholder with rectangular shape -->
           <% end %>
-          <div class="card-body d-flex flex-column" style="height: 100%;"> <!-- make the card body a flex container to position content -->
-            <h5 class="card-title"><%= list.name %></h5> <!-- display the name of the list -->
-            <div class="rating-stars mb-2"> <!-- stars for average rating -->
-              <% average_rating = list.bookmarks.joins(:movie).average(:rating).to_f %> <!-- get average rating from associated movies -->
-              <% (1..5).each do |i| %> <!-- loop through 1 to 5 stars -->
-                <% half_star = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %> <!-- determine star type -->
-                <i class="<%= half_star %>" style="color: gold; font-size: 1.5rem;"></i> <!-- set color and size for stars -->
+
+          <!-- Card Body: Display the list name and reviews -->
+          <div class="card-body d-flex flex-column justify-content-between" style="flex-grow: 1; padding-bottom: 10px;"> <!-- Fixed padding to control layout -->
+
+            <!-- List Name -->
+            <h5 class="card-title text-center" style="font-weight: bold; margin-bottom: 20px; text-transform: uppercase;"><%= list.name %></h5>
+
+            <!-- Reviews or No Reviews Section -->
+            <div class="mt-auto"> <!-- Add mt-auto to push content to bottom -->
+              <!-- Reviews or No Reviews Section -->
+              <% if list.bookmarks.any? %>
+                <div class="rating-stars" style="text-align: left; padding-left: 5px; margin-bottom: 5px;"> <!-- Add margin-bottom to create space between ratings and the button -->
+                  <% average_rating = list.bookmarks.joins(:movie).average(:rating).to_f %>
+                  <% if average_rating > 0 %>
+                    <span span class="average-rating-text">Average Rating:</span>
+                    <div>
+                      <% (1..5).each do |i| %>
+                        <% star_class = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
+                        <i class="<%= star_class %>" style="color: gold; font-size: 1.2rem; margin-right: 3px;"></i>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    <p style="font-size: 1rem; color: gray;">No ratings yet</p>
+                  <% end %>
+                </div>
+              <% else %>
+                <p style="font-size: 1rem; color: gray; padding-left: 10px; text-align: center;">No movies in this list!</p> <!-- Placeholder for no movies -->
               <% end %>
             </div>
-            <div class="mt-auto"> <!-- pushes buttons to the bottom -->
-              <%= link_to "View", list_path(list), class: "btn btn-primary w-100" %> <!-- button to view the list, made full width -->
-            </div>
           </div>
+
+          <!-- View Button -->
+          <div class="card-footer" style="padding: 10px; background-color: transparent; border-top: none; margin-top: auto;"> <!-- Keep the button at the bottom -->
+            <%= link_to "View", list_path(list), class: "btn btn-primary w-100" %>
+          </div>
+
         </div>
       </div>
     <% end %>

@@ -1,0 +1,13 @@
+<div class="container mt-4">
+  <h1>Edit Comment for <%= @bookmark.movie.title %></h1>
+
+  <%= form_with(model: [@list, @bookmark], local: true) do |form| %>
+    <div class="mb-3" style="max-width: 50%;">
+      <%= form.label :comment, "Edit Comment:" %>
+      <%= form.text_area :comment, class: "form-control" %>
+    </div>
+
+    <%= form.submit "Update Comment", class: "btn btn-primary" %>
+    <%= link_to 'Back to List', list_path(@list), class: 'btn btn-secondary' %>
+  <% end %>
+</div>

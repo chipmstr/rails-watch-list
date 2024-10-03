@@ -22,6 +22,22 @@ class BookmarksController < ApplicationController
     end
   end
 
+  def edit
+    @list = List.find(params[:list_id]) # find the related list
+    @bookmark = Bookmark.find(params[:id]) # find the bookmark to edit
+  end
+
+  def update
+    @list = List.find(params[:list_id]) # find the related list
+    @bookmark = Bookmark.find(params[:id]) # find the bookmark to update
+    if @bookmark.update(bookmark_params) # save the changes
+      redirect_to list_path(@list), notice: 'Comment was successfully updated.' # success message
+    else
+      flash.now[:alert] = @bookmark.errors.full_messages.join(", ") # error message on failure
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @bookmark = Bookmark.find(params[:id])
     @bookmark.destroy

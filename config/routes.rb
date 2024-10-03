@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   resources :movies  # This line generates all standard routes
 
   # routes for lists and nested bookmarks
-  resources :lists, only: [:index, :show, :new, :create] do
-    resources :bookmarks, only: [:new, :create, :destroy]
+  resources :lists, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    resources :bookmarks, only: [:new, :create, :destroy, :edit, :update]
   end
 
   # separate route for destroying bookmarks
