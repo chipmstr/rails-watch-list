@@ -12,39 +12,40 @@
       <div class="col-md-3">
         <div class="card mb-4 d-flex flex-column" style="height: 600px;"> <!-- Fixed height for the card -->
 
-          <!-- Image Section: Let the image cover the full width and fixed height, rectangular shape -->
+          <!-- Image Section: Fixed height and width for the image -->
           <% if list.photo.attached? %>
-            <%= cl_image_tag list.photo.key, class: "card-img-top", style: "height: 400px; object-fit: cover; width: 100%;" %> <!-- Adjusted to rectangular portrait orientation -->
+            <%= cl_image_tag list.photo.key, class: "card-img-top", style: "height: 400px; object-fit: cover; width: 100%;" %> <!-- Adjust the height to be fixed and cover the space -->
           <% else %>
-            <%= image_tag "https://via.placeholder.com/350x500", class: "card-img-top", style: "height: 400px; object-fit: cover; width: 100%;" %> <!-- Placeholder with rectangular shape -->
+            <%= image_tag "https://via.placeholder.com/350x500", class: "card-img-top", style: "height: 300px; object-fit: cover; width: 100%;" %> <!-- Placeholder image with fixed dimensions -->
           <% end %>
 
-          <!-- Card Body: Display the list name and reviews -->
-          <div class="card-body d-flex flex-column justify-content-between" style="flex-grow: 1; padding-bottom: 10px;"> <!-- Fixed padding to control layout -->
+          <!-- Card Body: Display the list name and reviews with fixed body height -->
+          <div class="card-body d-flex flex-column justify-content-between" style="flex-grow: 1; padding-bottom: 5px; height: 130px;"> <!-- Set height for the card body -->
 
             <!-- List Name -->
             <h5 class="card-title text-center" style="font-weight: bold; margin-bottom: 20px; text-transform: uppercase;"><%= list.name %></h5>
 
             <!-- Reviews or No Reviews Section -->
-            <div class="mt-auto"> <!-- Add mt-auto to push content to bottom -->
-              <!-- Reviews or No Reviews Section -->
+            <div class="mt-auto text-center d-flex flex-column justify-content-center align-items-center" style="height: 80px;">
               <% if list.bookmarks.any? %>
-                <div class="rating-stars" style="text-align: left; padding-left: 5px; margin-bottom: 5px;"> <!-- Add margin-bottom to create space between ratings and the button -->
-                  <% average_rating = list.bookmarks.joins(movie: :reviews).average('reviews.rating').to_f %>
-                  <% if average_rating > 0 %>
-                    <span class="average-rating-text">Average Rating:</span>
-                    <div>
-                      <% (1..5).each do |i| %>
-                        <% star_class = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
-                        <i class="<%= star_class %>" style="color: gold; font-size: 1.2rem; margin-right: 3px;"></i>
-                      <% end %>
-                    </div>
-                  <% else %>
+                <% average_rating = list.bookmarks.joins(movie: :reviews).average('reviews.rating').to_f %>
+                <% if average_rating > 0 %>
+                  <!-- Stars container -->
+                  <div class="stars-container mb-2">
+                    <% (1..5).each do |i| %>
+                      <% star_class = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
+                      <i class="<%= star_class %>" style="color: gold; font-size: 1.2rem; margin-right: 3px; margin-top: 20px;"></i>
+                    <% end %>
+                  </div>
+                  <!-- Average rating text -->
+                  <p class="text-muted" style="font-size: 0.9rem; margin-top: 3px;"><%= average_rating.round(2) %> / 5</p>
+                <% else %>
+                  <div class="no-rating-text d-flex justify-content-center align-items-center" style="height: 100%; width: 100%;">
                     <p style="font-size: 1rem; color: gray;">No ratings yet</p>
-                  <% end %>
-                </div>
+                  </div>
+                <% end %>
               <% else %>
-                <p style="font-size: 1rem; color: gray; padding-left: 10px; text-align: center;">No movies in this list!</p> <!-- Placeholder for no movies -->
+                <p style="font-size: 1rem; color: gray;">No movies in this list!</p> <!-- Placeholder for no movies -->
               <% end %>
             </div>
           </div>

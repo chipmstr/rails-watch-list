@@ -19,25 +19,30 @@
             <!-- Movie title at the top with more margin below it to create space -->
             <h5 class="card-title text-center" style="margin-bottom: 40px;"><%= movie.title %></h5>
 
-            <!-- Rating section pinned to the bottom of the card, above the View button -->
-            <div class="mt-auto text-center">
-              <div class="rating-stars mb-2">
-                <% average_rating = movie.reviews.average(:rating).to_f %>
+            <!-- Rating section with two divs for stars and No ratings yet -->
+            <div class="mt-auto text-center d-flex flex-column justify-content-center align-items-center" style="height: 80px;">
+              <% average_rating = movie.reviews.average(:rating).to_f %>
 
-                <!-- Show stars even if no rating exists -->
-                <% (1..5).each do |i| %>
-                  <% half_star = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
-                  <i class="<%= half_star %>" style="color: gold; font-size: 1.2rem;"></i>
-                <% end %>
-
-                <!-- Display average rating or 'No ratings yet' if no rating -->
+              <!-- Stars container -->
+              <div class="stars-container" style="min-height: 25px;">
                 <% if average_rating > 0 %>
-                  <p class="text-muted" style="font-size: 1rem; color: #6c757d; margin-top: 5px;"><%= average_rating.round(2) %> / 5</p>
-                <% else %>
+                  <% (1..5).each do |i| %>
+                    <% star_class = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
+                    <i class="<%= star_class %>" style="color: gold; font-size: 1.2rem; margin-right: 3px;"></i>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <!-- No ratings yet text container -->
+              <div class="no-rating-text" style="min-height: 25px;">
+                <% if average_rating == 0 %>
                   <p class="text-muted" style="font-size: 1rem; color: #6c757d; margin-top: 5px;">No ratings yet</p>
+                <% else %>
+                  <p class="text-muted" style="font-size: 1rem; color: #6c757d; margin-top: 5px;"><%= average_rating.round(2) %> / 5</p>
                 <% end %>
               </div>
             </div>
+
             <!-- view button stays at the bottom -->
             <%= link_to 'View', movie_path(movie), class: 'btn btn-primary w-100' %>
           </div>
