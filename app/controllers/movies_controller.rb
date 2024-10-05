@@ -42,6 +42,7 @@ class MoviesController < ApplicationController
   private
 
   def movie_params
-    params.require(:movie).permit(:title, :overview, :poster_url, :rating)  # allowed parameters
+    # remove :rating from permitted parameters as it's now handled via reviews
+    params.require(:movie).permit(:title, :overview, :poster_url)
   end
 end

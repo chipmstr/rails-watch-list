@@ -30,9 +30,9 @@
               <!-- Reviews or No Reviews Section -->
               <% if list.bookmarks.any? %>
                 <div class="rating-stars" style="text-align: left; padding-left: 5px; margin-bottom: 5px;"> <!-- Add margin-bottom to create space between ratings and the button -->
-                  <% average_rating = list.bookmarks.joins(:movie).average(:rating).to_f %>
+                  <% average_rating = list.bookmarks.joins(movie: :reviews).average('reviews.rating').to_f %>
                   <% if average_rating > 0 %>
-                    <span span class="average-rating-text">Average Rating:</span>
+                    <span class="average-rating-text">Average Rating:</span>
                     <div>
                       <% (1..5).each do |i| %>
                         <% star_class = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>

@@ -10,44 +10,39 @@
 
   <!-- edit and delete buttons left-aligned next to each other -->
   <div class="d-flex justify-content-start mb-3">
-    <%= link_to 'Edit List', edit_list_path(@list), class: 'btn btn-warning me-2' %> <!-- added margin to the right -->
-    <%= link_to 'Delete List', list_path(@list), method: :delete, data: { confirm: 'Are you sure you want to delete this list?' }, class: 'btn btn-danger' %>
+    <%= link_to 'Edit List', edit_list_path(@list), class: 'btn btn-warning me-2' %>
+    <%= link_to 'Delete List', list_path(@list), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
   </div>
 
   <h2>Movies in this list:</h2>
   <div class="row">
     <% @list.bookmarks.each do |bookmark| %>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- responsive columns for different screen sizes -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
         <div class="card h-100 shadow d-flex flex-column justify-content-between">
-          <!-- image is displayed in full aspect ratio without being cropped -->
+          <!-- movie poster -->
           <img class="card-img-top img-fluid" src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %>" style="height: auto; width: 100%; object-fit: contain;" />
 
           <div class="card-body flex-grow-1" style="background-color: #f8f9fa;">
             <h5 class="card-title"><%= bookmark.movie.title %></h5>
 
             <!-- rating section -->
-            <div class="d-flex align-items-center mb-2" style="flex-wrap: wrap; width: 100%;"> <!-- allow wrapping -->
-              <span style="font-size: 1rem; font-weight: bold; margin-right: 5px;">Rating:</span>
-              <% rating = bookmark.movie.rating %>
-              <% (1..5).each do |i| %>
-                <% half_star = (i <= rating) ? 'fas fa-star' : (i == rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
-                <i class="<%= half_star %>" style="color: gold; font-size: 1.2rem; margin-right: 3px;"></i>
+            <div class="d-flex align-items-center mb-2">
+              <span style="font-size: 1rem; font-weight: bold; margin-right: 5px;">Average Rating:</span>
+              <% average_rating = bookmark.movie.reviews.average(:rating).to_f %>
+              <% if average_rating > 0 %>
+                <% (1..5).each do |i| %>
+                  <% star_class = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
+                  <i class="<%= star_class %>" style="color: gold; font-size: 1.2rem; margin-right: 3px;"></i>
+                <% end %>
+              <% else %>
+                <p style="font-size: 1rem; color: gray;">No ratings yet</p>
               <% end %>
             </div>
-
-            <!-- scrollable comment section -->
-            <div class="card-text" style="max-height: 100px; overflow-y: auto;">
-              <%= bookmark.comment %>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-start" style="padding: 10px;">
-            <%= link_to 'Edit Comment', edit_list_bookmark_path(@list, bookmark), class: 'btn btn-secondary btn-sm' %>
           </div>
 
           <div class="d-flex justify-content-between" style="background-color: #e9ecef; padding: 10px;">
             <%= link_to "View", movie_path(bookmark.movie), class: "btn btn-primary btn-sm" %>
-            <%= link_to "Delete", list_bookmark_path(@list, bookmark), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+            <%= link_to "Remove from List", list_bookmark_path(@list, bookmark), method: :delete, data: { confirm: "Are you sure you want to remove #{bookmark.movie.title} from your #{@list.name} list?", turbo: false }, class: 'text-danger' %>
           </div>
         </div>
       </div>
@@ -56,21 +51,15 @@
 
   <h2 class="mt-5">Add a new movie to this list:</h2>
 
-  <!-- new section with border, padding, and background color -->
-  <div class="add-movie-section p-4 mt-4 mb-5" style="border: 2px solid #007bff; border-radius: 10px; background-color: #f8f9fa; max-width: 50%; overflow: hidden;"> <!-- added overflow hidden -->
+  <!-- Add movie section with border, padding, and background color -->
+  <div class="add-movie-section p-4 mt-4 mb-5" style="border: 2px solid #007bff; border-radius: 10px; background-color: #f8f9fa; max-width: 50%; overflow: hidden;">
     <%= form_with(model: [@list, @bookmark], local: true) do |form| %>
       <div class="mb-3">
-        <!-- dropdown for selecting a movie -->
-        <%= form.collection_select :movie_id, Movie.all, :id, :title, prompt: "Choose a Movie here", class: "form-select", style: "width: 50%; max-width: none;" %> <!-- ensure full width -->
+        <!-- movie selection dropdown -->
+        <%= form.collection_select :movie_id, Movie.all, :id, :title, { prompt: "Choose a Movie here" }, { class: "form-select", style: "width: 50%;", id: "movie_selection", name: "bookmark[movie_id]" } %>
       </div>
 
-      <div class="mb-3">
-        <%= form.text_field :comment, class: "form-control", placeholder: "Add a comment to the movie here ....." %>
-      </div>
-
-      <!-- add movie button -->
       <%= form.submit "Add movie", class: "btn btn-primary mt-3" %>
     <% end %>
   </div>
-
 </div>

@@ -1,9 +1,6 @@
 class Movie < ApplicationRecord
-  validates :rating, numericality: {
-    greater_than_or_equal_to: 1,
-    less_than_or_equal_to: 5,
-    message: "must be between 1 and 5"
-  }
+  # a movie has many reviews
+  has_many :reviews, dependent: :destroy
 
-  # Add other validations and associations as needed
+  # remove rating validation, as we now handle ratings through reviews
 end

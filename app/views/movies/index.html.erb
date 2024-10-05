@@ -9,21 +9,37 @@
 
   <div class="row">
     <% @movies.each do |movie| %>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- responsive collumns for different displays -->
-        <div class="card h-100 shadow">
-          <img class="card-img-top" src="<%= movie.poster_url %>" alt="<%= movie.title %>" class="img-fluid" style="height: auto; width: 100%; object-fit: contain;" /> <!-- Adjusted -->
-          <div class="card-body d-flex flex-column" style="justify-content: space-between;">
-            <div>
-              <h5 class="card-title"><%= movie.title %></h5>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- responsive columns for different displays -->
+        <div class="card h-100 shadow d-flex flex-column">
+          <!-- Movie picture -->
+          <img class="card-img-top" src="<%= movie.poster_url %>" alt="<%= movie.title %>" class="img-fluid" style="height: auto; width: 100%; object-fit: contain;" />
+
+          <!-- Card body with flexbox for layout control -->
+          <div class="card-body d-flex flex-column justify-content-between" style="flex-grow: 1;">
+            <!-- Movie title at the top with more margin below it to create space -->
+            <h5 class="card-title text-center" style="margin-bottom: 40px;"><%= movie.title %></h5>
+
+            <!-- Rating section pinned to the bottom of the card, above the View button -->
+            <div class="mt-auto text-center">
               <div class="rating-stars mb-2">
-                <% rating = movie.rating %>
+                <% average_rating = movie.reviews.average(:rating).to_f %>
+
+                <!-- Show stars even if no rating exists -->
                 <% (1..5).each do |i| %>
-                  <% half_star = (i <= rating) ? 'fas fa-star' : (i == rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
+                  <% half_star = (i <= average_rating) ? 'fas fa-star' : (i == average_rating + 0.5 ? 'fas fa-star-half-alt' : 'far fa-star') %>
                   <i class="<%= half_star %>" style="color: gold; font-size: 1.2rem;"></i>
+                <% end %>
+
+                <!-- Display average rating or 'No ratings yet' if no rating -->
+                <% if average_rating > 0 %>
+                  <p class="text-muted" style="font-size: 1rem; color: #6c757d; margin-top: 5px;"><%= average_rating.round(2) %> / 5</p>
+                <% else %>
+                  <p class="text-muted" style="font-size: 1rem; color: #6c757d; margin-top: 5px;">No ratings yet</p>
                 <% end %>
               </div>
             </div>
-            <%= link_to 'View', movie_path(movie), class: 'btn btn-primary' %>
+            <!-- view button stays at the bottom -->
+            <%= link_to 'View', movie_path(movie), class: 'btn btn-primary w-100' %>
           </div>
         </div>
       </div>

@@ -121,6 +121,5 @@ movies.each do |movie|
   Movie.find_or_create_by!(title: movie[:title]) do |m|
     m.overview = movie[:overview]
     m.poster_url = "https://image.tmdb.org/t/p/w500#{movie[:poster_path]}"
-    m.rating = movie[:rating]
   end
 end

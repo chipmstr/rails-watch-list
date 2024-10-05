@@ -9,44 +9,51 @@ class BookmarksController < ApplicationController
     @bookmark = Bookmark.new(bookmark_params)
     @bookmark.list = @list
 
-    puts "Bookmark Params: #{bookmark_params.inspect}"
-    puts "List: #{@list.inspect}"
-    puts "Bookmark: #{@bookmark.inspect}"
-
     if @bookmark.save
+      # Redirect to the list show page to avoid resubmitting the form data
       redirect_to list_path(@list), notice: 'Bookmark was successfully created.'
     else
-      puts "Bookmark Errors: #{@bookmark.errors.full_messages}"
+      # Render the current list with the errors (keeps the user on the same page)
       flash.now[:alert] = @bookmark.errors.full_messages.join(", ")
       render 'lists/show', status: :unprocessable_entity
     end
   end
 
   def edit
-    @list = List.find(params[:list_id]) # find the related list
-    @bookmark = Bookmark.find(params[:id]) # find the bookmark to edit
+    @list = List.find(params[:list_id])
+    @bookmark = Bookmark.find(params[:id])
   end
 
   def update
-    @list = List.find(params[:list_id]) # find the related list
-    @bookmark = Bookmark.find(params[:id]) # find the bookmark to update
-    if @bookmark.update(bookmark_params) # save the changes
-      redirect_to list_path(@list), notice: 'Comment was successfully updated.' # success message
+    @list = List.find(params[:list_id])
+    @bookmark = Bookmark.find(params[:id])
+
+    if @bookmark.update(bookmark_params)
+      redirect_to list_path(@list), notice: 'Bookmark was successfully updated.'
     else
-      flash.now[:alert] = @bookmark.errors.full_messages.join(", ") # error message on failure
+      flash.now[:alert] = @bookmark.errors.full_messages.join(", ")
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @bookmark = Bookmark.find(params[:id])
-    @bookmark.destroy
-    redirect_to list_path(@bookmark.list), status: :see_other, notice: 'Bookmark was successfully deleted.'
+
+    Rails.logger.debug "Deleting bookmark with ID: #{@bookmark.id}"
+
+    if @bookmark.destroy
+      redirect_to list_path(@bookmark.list), status: :see_other, notice: 'Bookmark was successfully deleted.'
+    else
+      Rails.logger.error "Failed to delete bookmark: #{@bookmark.errors.full_messages.join(', ')}"
+      flash[:alert] = 'Error deleting bookmark.'
+      redirect_to list_path(@bookmark.list)
+    end
   end
 
   private
 
   def bookmark_params
-    params.require(:bookmark).permit(:comment, :movie_id)
+    # Only permit movie_id now, comment is no longer needed
+    params.require(:bookmark).permit(:movie_id)
   end
 end

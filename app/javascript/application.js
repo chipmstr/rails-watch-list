@@ -1,8 +1,5 @@
-// configure your import map in config/importmap.rb. read more: https://github.com/rails/importmap-rails
+import "@hotwired/turbo-rails";
+import Rails from "@rails/ujs";
+Rails.start();
 
-//= require rails-ujs
-
-import "@hotwired/turbo-rails"
-import "controllers"
-import "bootstrap"
-import "@popperjs/core"
+import "controllers";

@@ -22,14 +22,6 @@
       <%= f.text_field :poster_url, class: 'form-control', placeholder: 'Enter poster URL', style: 'width: 45%;' %> <!-- input field for poster URL with custom width -->
     </div>
 
-    <div class="mb-3">
-      <%= f.label :rating, "Rating" %> <!-- label for rating -->
-      <div>
-        <%= f.range_field :rating, class: 'form-range', min: 1, max: 5, step: 0.5, value: @movie.rating, style: 'width: 30%; margin: 0 auto; appearance: none; background: #e9ecef;' %> <!-- shorter and more prominent slider -->
-      </div>
-      <p>Current Rating: <span id="current-rating"><%= @movie.rating %></span></p> <!-- display current rating -->
-    </div>
-
     <div>
       <%= f.submit 'Create Movie', class: 'btn btn-primary' %> <!-- submit button to create movie -->
     </div>
