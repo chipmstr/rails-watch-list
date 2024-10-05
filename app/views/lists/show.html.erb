@@ -22,12 +22,12 @@
           <!-- movie poster -->
           <img class="card-img-top img-fluid" src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %>" style="height: auto; width: 100%; object-fit: contain;" />
 
-          <div class="card-body flex-grow-1" style="background-color: #f8f9fa;">
-            <h5 class="card-title"><%= bookmark.movie.title %></h5>
+          <div class="card-body flex-grow-1" style="background-color: #f8f9fa; padding: 5px; min-height: 120px;">
+            <h5 class="card-title" style="margin: 10px 0 5px 5px;"><%= bookmark.movie.title %></h5>
 
             <!-- rating section -->
-            <div class="d-flex align-items-center mb-2">
-              <span style="font-size: 1rem; font-weight: bold; margin-right: 5px;">Average Rating:</span>
+            <!-- rating section -->
+            <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
               <% average_rating = bookmark.movie.reviews.average(:rating).to_f %>
               <% if average_rating > 0 %>
                 <% (1..5).each do |i| %>
@@ -35,9 +35,12 @@
                   <i class="<%= star_class %>" style="color: gold; font-size: 1.2rem; margin-right: 3px;"></i>
                 <% end %>
               <% else %>
-                <p style="font-size: 1rem; color: gray;">No ratings yet</p>
+                <div class="d-flex justify-content-center align-items-center" style="height: 100%; width: 100%;">
+                  <p style="font-size: 1rem; color: gray;">No ratings yet</p>
+                </div>
               <% end %>
             </div>
+
           </div>
 
           <div class="d-flex justify-content-between" style="background-color: #e9ecef; padding: 10px;">
