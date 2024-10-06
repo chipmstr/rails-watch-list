@@ -67,7 +67,15 @@
 
   <script>
     // dynamically update rating value next to the slider
+    document.addEventListener("DOMContentLoaded", function() {
+      initializeSlider();
+    });
+
     document.addEventListener("turbo:load", function() {
+      initializeSlider();
+    });
+
+    function initializeSlider() {
       const slider = document.getElementById("rating-slider");
       const ratingValue = document.getElementById("rating-value");
 
@@ -77,6 +85,6 @@
           ratingValue.innerText = this.value + "/5"; // Update displayed value
         });
       }
-    });
+    }
   </script>
 </div>
