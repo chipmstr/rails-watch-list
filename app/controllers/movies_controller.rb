@@ -16,6 +16,7 @@ class MoviesController < ApplicationController
     if @movie.save
       redirect_to movie_path(@movie), notice: 'Movie was successfully created.'  # redirect on success
     else
+      flash.now[:alert] = 'Please fill in all required fields (Title, Overview, Poster URL).'  # flash alert if validation fails
       render :new, status: :unprocessable_entity  # render form again on error
     end
   end
@@ -29,6 +30,7 @@ class MoviesController < ApplicationController
     if @movie.update(movie_params)
       redirect_to movie_path(@movie), notice: 'Movie was successfully updated.'  # redirect on success
     else
+      flash.now[:alert] = 'Please fill in all required fields (Title, Overview, Poster URL).'  # flash alert if validation fails
       render :edit, status: :unprocessable_entity  # render form again on error
     end
   end

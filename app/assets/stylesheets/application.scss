@@ -103,3 +103,15 @@
   max-width: 100%; /* ensure the section doesn't exceed its parent */
   overflow: hidden; /* hide overflow content */
 }
+
+/* Default for larger screens (like computer) */
+.input-responsive {
+  width: 30%;
+}
+
+/* Media query for devices with max width of 576px (mobile) */
+@media (max-width: 576px) {
+  .input-responsive {
+    width: 80% !important;
+  }
+}
