@@ -44,7 +44,7 @@
 
           <div class="d-flex justify-content-between" style="background-color: #e9ecef; padding: 10px;">
             <%= link_to "View", movie_path(bookmark.movie), class: "btn btn-primary btn-sm" %>
-            <%= link_to "Remove from List", list_bookmark_path(@list, bookmark), method: :delete, data: { confirm: "Are you sure you want to remove #{bookmark.movie.title} from your #{@list.name} list?", turbo: false }, class: 'text-danger' %>
+            <%= link_to "Remove from List", list_bookmark_path(@list, bookmark), data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove #{bookmark.movie.title} from your #{@list.name} list?" }, class: 'text-danger' %>
           </div>
         </div>
       </div>
